@@ -33,8 +33,7 @@ const userModel = new mongoose.Schema({
     codeVarified: {
         type: Boolean,
         default: false,
-        required: true,
-        select: false
+        required: true
     }
 }, {
     timestamps: true,

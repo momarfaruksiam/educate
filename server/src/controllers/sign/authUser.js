@@ -25,7 +25,7 @@ authUser.get('/', async (req, res) => {
             { expiresIn: '7d' }
         )
 
-        res.cookie('authToken', setAuthToken, {
+        res.cookie('authToken', authToken, {
             httpOnly: true,
             secure: false,
             sameSite: 'lax',
