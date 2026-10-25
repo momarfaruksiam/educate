@@ -18,11 +18,13 @@ const storage = multer.diskStorage({
         const pathName = path.join(__dirname, '../../../storage', req.user._id.toString(), folderName)
 
         fs.mkdirSync(pathName, { recursive: true })
+        req.pathName = pathName
         cb(null, pathName)
     },
     filename: (req, file, cb) => {
-        const uniqueName = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}${path.extname(file.originalname)}`
-        cb(null, uniqueName)
+        const fileName = `${Date.now()}-${crypto.randomBytes(8).toString('hex')}${path.extname(file.originalname)}`
+        req.fileName = fileName
+        cb(null, fileName)
     }
 })
 
@@ -33,12 +35,16 @@ upolad.post('/', upload.single('file'), (req, res) => {
     if (!req.file)
         return res.status(404).json({
             success: false,
-            message: 'No files found!'
+            message: 'No files found!',
         })
+
+    const uniqueFilePathName = path.join(req.pathName, req.fileName)
 
     return res.status(200).json({
         success: true,
-        message: 'File uploaded successfully!'
+        message: 'File uploaded successfully!',
+        path: uniqueFilePathName,
+        file
     })
 })
 
